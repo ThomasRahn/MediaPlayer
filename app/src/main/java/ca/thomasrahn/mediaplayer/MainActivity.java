@@ -19,7 +19,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String path = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle b = new Bundle();
 
-                b.putString("file", "test");
+                b.putString("file", path);
 
                 intent.putExtras(b);
 
@@ -43,33 +43,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        File sdcard = Environment.getExternalStorageDirectory();
+        String root_sd = Environment.getExternalStorageDirectory().toString();
+        File file = new File(root_sd + "/Download");
 
-        //Get the text file
-        File file = new File(sdcard,"file.txt");
 
-        //Read text from file
-        StringBuilder text = new StringBuilder("test");
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-            br.close();
-        }
-        catch (IOException e) {
-            //You'll need to add proper error handling here
+        StringBuffer sb = new StringBuffer();
+        for(String s : file.list()){
+            sb.append(s);
         }
 
+        path = file.listFiles()[1].getAbsolutePath();
         //Find the view by its id
         TextView tv = (TextView)findViewById(R.id.file_view);
 
         //Set the text
-        tv.setText(text);
+        tv.setText(sb.toString());
 
 
     }

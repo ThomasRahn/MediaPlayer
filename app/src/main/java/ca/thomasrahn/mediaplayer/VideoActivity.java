@@ -1,9 +1,14 @@
 package ca.thomasrahn.mediaplayer;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.MediaController;
 import android.widget.VideoView;
+
+import java.io.File;
 
 public class VideoActivity extends AppCompatActivity {
 
@@ -23,7 +28,11 @@ public class VideoActivity extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
+                mp.start();
             }
         });
+
+        MediaController mc = new MediaController(this);
+        vv.setMediaController(mc);
     }
 }
