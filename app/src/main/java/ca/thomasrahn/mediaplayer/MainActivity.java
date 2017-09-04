@@ -10,10 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,62 +31,49 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+
+                Bundle b = new Bundle();
+
+                b.putString("file", "test");
+
+                intent.putExtras(b);
+
                 startActivity(intent);
+
             }
         });
 
-    }
-    //In an Activity
-    private String[] mFileList;
-    private File mPath = new File(Environment.getExternalStorageDirectory() + "//yourdir//");
-    private String mChosenFile;
-    private static final String FTYPE = ".txt";
-    private static final int DIALOG_LOAD_FILE = 1000;
+        File sdcard = Environment.getExternalStorageDirectory();
 
-    private void loadFileList() {
+        //Get the text file
+        File file = new File(sdcard,"file.txt");
+
+        //Read text from file
+        StringBuilder text = new StringBuilder("test");
+
         try {
-            mPath.mkdirs();
-        }
-        catch(SecurityException e) {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
 
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
         }
-        if(mPath.exists()) {
-            FilenameFilter filter = new FilenameFilter() {
+        catch (IOException e) {
+            //You'll need to add proper error handling here
+        }
 
-                @Override
-                public boolean accept(File dir, String filename) {
-                    File sel = new File(dir, filename);
-                    return filename.contains(FTYPE) || sel.isDirectory();
-                }
+        //Find the view by its id
+        TextView tv = (TextView)findViewById(R.id.file_view);
 
-            };
-            mFileList = mPath.list(filter);
-        }
-        else {
-            mFileList= new String[0];
-        }
+        //Set the text
+        tv.setText(text);
+
+
     }
 
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        switch(id) {
-            case DIALOG_LOAD_FILE:
-                builder.setTitle("Choose your file");
-                if(mFileList == null) {
-                    dialog = builder.create();
-                    return dialog;
-                }
-                builder.setItems(mFileList, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mChosenFile = mFileList[which];
-                        //you can do stuff with the file here too
-                    }
-                });
-                break;
-        }
-        dialog = builder.show();
-        return dialog;
-    }
+
 }

@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context="ca.thomasrahn.mediaplayer.MainActivity">
 
-    <Button
-        android:id="@+id/play_video"
+    <TextView
+        android:id="@+id/file_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="28dp" />
+
+    <Button
+        android:id="@+id/play_video"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
         android:text="Play"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="231dp" />
+        tools:layout_editor_absoluteX="-33dp"
+        tools:layout_editor_absoluteY="-222dp" />
 
 </android.support.constraint.ConstraintLayout>
